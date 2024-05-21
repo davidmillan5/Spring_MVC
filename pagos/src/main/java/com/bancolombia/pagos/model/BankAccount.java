@@ -38,6 +38,14 @@ public class BankAccount {
     public BankAccount() {
     }
 
+    public BankAccount(Long id, AccountType accountType, double balance, User user, List<Transaction> transactions) {
+        this.id = id;
+        this.accountType = accountType;
+        this.balance = balance;
+        this.user = user;
+        this.transactions = transactions;
+    }
+
     public Long getId() {
         return id;
     }

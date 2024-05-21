@@ -3,6 +3,7 @@ package com.bancolombia.pagos.service;
 import com.bancolombia.pagos.model.BankAccount;
 import com.bancolombia.pagos.repository.BankAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,7 +24,7 @@ public class BankAccountService {
 
     public BankAccount createBankAccount(BankAccount bankAccount) {
         if (bankAccount.getUser() == null) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(400), HTTP400);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HTTP404);
         }
         return bankAccountRepository.save(bankAccount);
     }
@@ -34,12 +35,12 @@ public class BankAccountService {
 
     public BankAccount getBankAccount(Long id) {
         return bankAccountRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), HTTP404));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, HTTP404));
     }
 
     public void updateBankAccount(Long id, BankAccount bankAccount) {
         if (!bankAccountRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(404), HTTP404);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HTTP404);
         }
         bankAccount.setId(id);
         bankAccountRepository.save(bankAccount);
@@ -47,7 +48,7 @@ public class BankAccountService {
 
     public void deleteBankAccount(Long id) {
         if (!bankAccountRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(404), HTTP404);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HTTP404);
         }
         bankAccountRepository.deleteById(id);
     }

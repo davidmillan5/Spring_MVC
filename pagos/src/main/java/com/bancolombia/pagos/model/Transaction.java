@@ -2,26 +2,32 @@ package com.bancolombia.pagos.model;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "Transaction")
 public class Transaction {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private double amount;
-    private String type; // deposit/withdrawal
-    private String date;
+
+    @Enumerated(EnumType.STRING)
+    private TransactionType type;
+
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     @ManyToOne
-    @JoinColumn(name = "bank_account_id")
+    @JoinColumn(name = "bank_account_id", nullable = false)
     private BankAccount bankAccount;
-
 
     public Transaction() {
     }
 
-    public Transaction(Long id, double amount, String type, String date, BankAccount bankAccount) {
+    public Transaction(Long id, double amount, TransactionType type, Date date, BankAccount bankAccount) {
         this.id = id;
         this.amount = amount;
         this.type = type;
@@ -45,19 +51,19 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public String getType() {
+    public TransactionType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TransactionType type) {
         this.type = type;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -74,9 +80,14 @@ public class Transaction {
         return "Transaction{" +
                 "id=" + id +
                 ", amount=" + amount +
-                ", type='" + type + '\'' +
-                ", date='" + date + '\'' +
+                ", type=" + type +
+                ", date=" + date +
                 ", bankAccount=" + bankAccount +
                 '}';
+    }
+
+    public enum TransactionType {
+        DEPOSIT,
+        WITHDRAWAL
     }
 }
