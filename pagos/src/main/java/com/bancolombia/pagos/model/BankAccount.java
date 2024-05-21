@@ -8,11 +8,24 @@ import java.util.List;
 @Table(name = "BankAccount")
 public class BankAccount {
 
+    public enum AccountType {
+        SAVINGS,
+        CHECKING,
+        MONEY,
+        SALARY,
+        CURRENCY,
+        STUDENTS,
+        CDS
+    }
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "account_type", nullable = false)
+    private AccountType accountType;
+
     private double balance;
 
     @ManyToOne
@@ -22,16 +35,7 @@ public class BankAccount {
     @OneToMany(mappedBy = "bankAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions;
 
-
     public BankAccount() {
-    }
-
-    public BankAccount(Long id, String name, double balance, User user, List<Transaction> transactions) {
-        this.id = id;
-        this.name = name;
-        this.balance = balance;
-        this.user = user;
-        this.transactions = transactions;
     }
 
     public Long getId() {
@@ -42,12 +46,12 @@ public class BankAccount {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public AccountType getAccountType() {
+        return accountType;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 
     public double getBalance() {
@@ -78,7 +82,7 @@ public class BankAccount {
     public String toString() {
         return "BankAccount{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", accountType=" + accountType +
                 ", balance=" + balance +
                 ", user=" + user +
                 ", transactions=" + transactions +

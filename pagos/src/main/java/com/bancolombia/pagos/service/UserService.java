@@ -13,7 +13,7 @@ import java.util.Optional;
 public class UserService {
 
     static final String HTTP404 = "The user does not exist, enter a valid user id";
-    static final  String HTTP400 = "You should enter a name";
+    static final String HTTP400 = "You should enter a name";
 
     private final UserRepository repository;
 
@@ -21,7 +21,7 @@ public class UserService {
         this.repository = repository;
     }
 
-    public User saveUser(User user){
+    public User createUser(User user){
         Optional.of(user).filter(u -> user.getName() != null)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(400), HTTP400));
         Optional.of(user).filter(u -> !user.getName().isBlank())
