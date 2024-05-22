@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -31,9 +32,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<Iterable<User>> getUsers() {
-        Iterable<User> users = userService.getUsers();
-        return ResponseEntity.status(HttpStatus.OK).body(users);
+    public List<User> getUsers() {
+        return userService.getUsers();
     }
 
     @PutMapping("/{id}")
