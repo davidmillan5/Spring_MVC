@@ -2,9 +2,7 @@ package com.bancolombia.pagos.service;
 
 import com.bancolombia.pagos.model.BankAccount;
 import com.bancolombia.pagos.repository.BankAccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -38,12 +36,13 @@ public class BankAccountService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, HTTP404));
     }
 
-    public void updateBankAccount(Long id, BankAccount bankAccount) {
+    public BankAccount updateBankAccount(Long id, BankAccount bankAccount) {
         if (!bankAccountRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, HTTP404);
         }
         bankAccount.setId(id);
         bankAccountRepository.save(bankAccount);
+        return bankAccount;
     }
 
     public void deleteBankAccount(Long id) {
